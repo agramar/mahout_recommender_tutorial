@@ -27,12 +27,12 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
-public class ItemBasedRecommenderEvaluator {
+public class ItemBasedRecommenderEvaluator extends AbstractRecommenderEvaluator {
 
 	public static void main(String[] args) throws IOException, TasteException {
 
 		long start = System.currentTimeMillis();
-		System.out.println("프로그램 실행 시작");
+		logger.debug("프로그램 실행 시작");
 
 		// 반복되는 결과 생성
 		RandomUtils.useTestSeed();
@@ -96,12 +96,12 @@ public class ItemBasedRecommenderEvaluator {
 		double AverageScore = AverageEvaluator.evaluate(builder, null, model, 0.7, 1.0);
 		double RMSEScore = RMSEevaluator.evaluate(builder, null, model, 0.7, 1.0);
 
-		System.out.println("Average : " + AverageScore);
-		System.out.println("RMSE : " + RMSEScore);
+		logger.debug("Average : " + AverageScore);
+		logger.debug("RMSE : " + RMSEScore);
 
 		long end = System.currentTimeMillis();
-		System.out.println("실행 시간 : " + (end - start) / 1000.0);
-		System.out.println("프로그램 실행 종료");
+		logger.debug("실행 시간 : " + (end - start) / 1000.0);
+		logger.debug("프로그램 실행 종료");
 
 	}
 }

@@ -29,12 +29,12 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
-public class UserBasedRecommenderEvaluator {
+public class UserBasedRecommenderEvaluator extends AbstractRecommenderEvaluator {
 
 	public static void main(String[] args) throws IOException, TasteException {
 
 		long start = System.currentTimeMillis();
-		System.out.println("프로그램 실행 시작");
+		logger.debug("프로그램 실행 시작");
 
 		// 반복되는 결과 생성
 		RandomUtils.useTestSeed();
@@ -59,19 +59,19 @@ public class UserBasedRecommenderEvaluator {
 //			}
 			
 			// 사용자 기반 추천기 - EuclideanDistanceSimilarity - 최근접 이웃 2명
-//			@Override
-//			public Recommender buildRecommender(DataModel model) throws TasteException {
-//				UserSimilarity similarity = new EuclideanDistanceSimilarity(model);
-//				UserNeighborhood neighborhood = new NearestNUserNeighborhood(2, similarity, model);
-//				return new GenericUserBasedRecommender(model, neighborhood, similarity);
-//			}
-			
-			// 사용자 기반 추천기 - LogLikelihoodSimilarity - 최근접 이웃 2명
-			@Override public Recommender buildRecommender(DataModel model) throws TasteException { 
-				UserSimilarity similarity = new	LogLikelihoodSimilarity(model); 
-				UserNeighborhood neighborhood = new NearestNUserNeighborhood(2, similarity, model); 
+			@Override
+			public Recommender buildRecommender(DataModel model) throws TasteException {
+				UserSimilarity similarity = new EuclideanDistanceSimilarity(model);
+				UserNeighborhood neighborhood = new NearestNUserNeighborhood(2, similarity, model);
 				return new GenericUserBasedRecommender(model, neighborhood, similarity);
 			}
+			
+			// 사용자 기반 추천기 - LogLikelihoodSimilarity - 최근접 이웃 2명
+//			@Override public Recommender buildRecommender(DataModel model) throws TasteException { 
+//				UserSimilarity similarity = new	LogLikelihoodSimilarity(model); 
+//				UserNeighborhood neighborhood = new NearestNUserNeighborhood(2, similarity, model); 
+//				return new GenericUserBasedRecommender(model, neighborhood, similarity);
+//			}
 			
 			// 사용자 기반 추천기 - CityBlockSimilarity - 최근접 이웃 2명
 //			@Override
@@ -106,16 +106,16 @@ public class UserBasedRecommenderEvaluator {
 //			}
 		};
 		
-		// 5%의 데이터에서 70%를 학습에 사용, 30%는 테스트에 사용
-		double AverageScore = AverageEvaluator.evaluate(builder, null, model, 0.7, 0.1);
-		double RMSEScore = RMSEevaluator.evaluate(builder, null, model, 0.7, 0.1);
+		// 데이터에서 70%를 학습에 사용, 30%는 테스트에 사용
+		double AverageScore = AverageEvaluator.evaluate(builder, null, model, 0.7, 1);
+		double RMSEScore = RMSEevaluator.evaluate(builder, null, model, 0.7, 1);
 
-		System.out.println("Average : " + AverageScore);
-		System.out.println("RMSE : " + RMSEScore);
+		logger.debug("Average : " + AverageScore);
+		logger.debug("RMSE : " + RMSEScore);
 
 		long end = System.currentTimeMillis();
-		System.out.println("실행 시간 : " + (end - start) / 1000.0);
-		System.out.println("프로그램 실행 종료");
+		logger.debug("실행 시간 : " + (end - start) / 1000.0);
+		logger.debug("프로그램 실행 종료");
 
 	}
 }
